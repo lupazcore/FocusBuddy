@@ -1,0 +1,26 @@
+node_modules/
+dist/
+release/
+.env
+.env.*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.electron-builder-cache/
+.cache/
+*.pem
+*.p12
+# The built-in sounds are committed so the app works right after a clone
+# with no extra setup. Only ignore non-MP3 leftovers someone might drop
+# in here while experimenting.
+assets/sounds/*.wav
+assets/sounds/*.m4a
+assets/sounds/*.flac
+assets/sounds/*.aac
+assets/sounds/*.wma
+assets/icons/*.ico
+assets/icons/*.icns
+assets/icons/png/

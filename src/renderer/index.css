@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #000000;
+  --sidebar: #16171a;
+  --paper: #f5f2e6;
+  --card: #ffffff;
+  --gold: #f0b429;
+  --violet: #7c5cfc;
+  --leaf: #6fa84a;
+}
+
+.dark {
+  --ink: #f2f0e8;
+  --sidebar: #16171a;
+  --paper: #1e2024;
+  --card: #26282c;
+  --gold: #d9a52f;
+  --violet: #6f56d6;
+  --leaf: #63965f;
+}
+
+.dark.oled {
+  --sidebar: #000000;
+  --paper: #000000;
+  --card: #000000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+}
+
+/* The floating mini-player window is transparent so its own rounded card
+   (not Windows' generic auto-rounded window shape) defines its outline. */
+body.miniplayer-mode {
+  background: transparent;
+  color: var(--ink);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  /* `antialiased` is tuned for Mac Retina rendering and makes small/semibold
+     text look thin and washed-out on Windows Chromium instead. `auto` lets
+     each platform use its own native (sharper, on Windows) text rendering. */
+  -webkit-font-smoothing: auto;
+}
+
+.dot-grid {
+  --dot-opacity: 10%;
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) var(--dot-opacity), transparent) 1.4px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+.dark.oled .dot-grid {
+  --dot-opacity: 20%;
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.kicker {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.headline {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.mono-num {
+  font-family: 'Space Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+@layer components {
+  .tile-base {
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+    background: var(--card);
+  }
+  .tile-hero {
+    box-shadow: calc(8px - var(--press-dist, 0px)) calc(8px - var(--press-dist, 0px)) 0 var(--ink);
+  }
+  .tile-normal {
+    box-shadow: calc(6px - var(--press-dist, 0px)) calc(6px - var(--press-dist, 0px)) 0 var(--ink);
+  }
+  .tile-small {
+    box-shadow: calc(4px - var(--press-dist, 0px)) calc(4px - var(--press-dist, 0px)) 0 var(--ink);
+  }
+  .tile-pressable {
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    cursor: pointer;
+    --press-dist: 0px;
+  }
+  .tile-pressable:hover {
+    --press-dist: 2px;
+    transform: translate(2px, 2px);
+  }
+  .tile-pressable:active {
+    --press-dist: 4px;
+    transform: translate(4px, 4px);
+    transition: transform 50ms ease, box-shadow 50ms ease;
+  }
+}
+
+.focus-ring:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile-pressable:active {
+    transform: none;
+  }
+  .animate-breathe {
+    animation: none !important;
+  }
+  .animate-popIn {
+    animation: none !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink) 25%, transparent);
+  border-radius: 8px;
+}

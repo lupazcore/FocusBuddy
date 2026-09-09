@@ -1,0 +1,59 @@
+{
+  "name": "focus-buddy",
+  "productName": "Focus Buddy",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lupazcore/Focus-Buddy.git"
+  },
+  "description": "Focus Buddy",
+  "author": "Lupaz",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/main/index.js",
+  "homepage": "./",
+  "scripts": {
+    "dev:renderer": "vite",
+    "dev:main": "tsc -p tsconfig.node.json --watch",
+    "dev": "concurrently -k -n RENDERER,MAIN,ELECTRON -c cyan,magenta,yellow \"npm:dev:renderer\" \"npm:dev:main\" \"wait-on tcp:5173 dist/main/index.js && cross-env NODE_ENV=development electron .\"",
+    "build:renderer": "vite build",
+    "build:main": "tsc -p tsconfig.node.json",
+    "build": "npm run build:renderer && npm run build:main",
+    "icons": "node assets/icons/generate-icons.mjs",
+    "lint": "eslint src --ext .ts,.tsx",
+    "pack": "npm run build",
+    "build:win-x64": "npm run pack && electron-builder --win nsis --x64",
+    "build:win-ia32": "npm run pack && electron-builder --win nsis --ia32",
+    "build:mac": "npm run pack && electron-builder --mac dmg --universal",
+    "build:linux": "npm run pack && electron-builder --linux AppImage deb rpm",
+    "build:all": "npm run build:win-x64 && npm run build:win-ia32 && npm run build:mac && npm run build:linux",
+    "predev": "node -e \"require('fs').rmSync('dist', {recursive:true, force:true})\""
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0",
+    "electron-updater": "^6.3.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "43.0.0",
+    "electron-builder": "^25.1.8",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "icon-gen": "^4.0.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "wait-on": "^8.0.1"
+  }
+}
