@@ -67,7 +67,7 @@ Focus Buddy is an Electron + Vite + React + TypeScript app, built with electron-
 ### Setup
 
 ```bash
-git clone https://github.com/lupazcore/Focus-Buddy.git
+git clone https://github.com/lupazcore/Focusbuddy.git
 cd focus-buddy
 npm install
 npm run icons   # rasterizes assets/icons/*.svg into .ico / .icns / PNGs
