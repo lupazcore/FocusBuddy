@@ -1,13 +1,13 @@
 {
   "name": "focus-buddy",
   "productName": "Focus Buddy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/lupazcore/Focusbuddy.git"
   },
   "description": "Focus Buddy",
-  "author": "Lupaz",
+  "author": "Lupaz <lupaz@example.com>",
   "license": "MIT",
   "private": true,
   "main": "dist/main/index.js",
