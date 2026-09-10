@@ -45,7 +45,7 @@ mac:
   gatekeeperAssess: false
 
 linux:
-  icon: assets/icons/png
+  icon: assets/icons/png/icon512.png
   category: Utility
   target:
     - target: AppImage
