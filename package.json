@@ -7,7 +7,7 @@
     "url": "https://github.com/lupazcore/Focusbuddy.git"
   },
   "description": "Focus Buddy",
-  "author": "Lupaz",
+  "author": "Lupaz <220923853+lupazcore@users.noreply.github.com>",
   "license": "MIT",
   "private": true,
   "main": "dist/main/index.js",
