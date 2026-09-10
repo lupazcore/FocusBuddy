@@ -42,7 +42,7 @@ const api: FocusBuddyAPI = {
     customUrl: (fileName) => `fb-sound://custom/${encodeURIComponent(fileName)}`,
   },
   notifications: {
-    show: (title, body) => ipcRenderer.send(IPC.NOTIFICATION_SHOW, title, body),
+    show: (title, body, exemptFromDeepFocus) => ipcRenderer.send(IPC.NOTIFICATION_SHOW, title, body, exemptFromDeepFocus),
   },
   autostart: {
     set: (enabled) => ipcRenderer.invoke(IPC.AUTOSTART_SET, enabled),

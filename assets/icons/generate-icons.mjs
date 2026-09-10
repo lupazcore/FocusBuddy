@@ -45,8 +45,17 @@ async function generatePngOnly(svgPath, name, wantedSizes) {
       report: true,
       favicon: { name, pngSizes, icoSizes: [] },
     });
-    for (const size of wantedSizes) {
-      fs.copyFileSync(path.join(scratch, `${name}${size}.png`), path.join(outDir, `${name}${size}.png`));
+    // Electron prefers standard base name and @2x suffix
+    const baseSize = wantedSizes[0];
+    const doubleSize = wantedSizes.find(s => s === baseSize * 2);
+    const tripleSize = wantedSizes.find(s => s === baseSize * 3);
+
+    fs.copyFileSync(path.join(scratch, `${name}${baseSize}.png`), path.join(outDir, `${name}.png`));
+    if (doubleSize) {
+      fs.copyFileSync(path.join(scratch, `${name}${doubleSize}.png`), path.join(outDir, `${name}@2x.png`));
+    }
+    if (tripleSize) {
+      fs.copyFileSync(path.join(scratch, `${name}${tripleSize}.png`), path.join(outDir, `${name}@3x.png`));
     }
   } finally {
     fs.rmSync(scratch, { recursive: true, force: true });

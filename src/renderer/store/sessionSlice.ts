@@ -42,16 +42,65 @@ export const createSessionSlice: StateCreator<SessionSlice, [], [], SessionSlice
 
   advancePhase: () => {
     const { phase, focusWorkMinutes, focusBreakMinutes } = get();
+    
+    const playGentleChime = () => {
+      try {
+        const ctx = new window.AudioContext();
+        const now = ctx.currentTime;
+        
+        // Play the chime 3 times, spaced by 1.0 seconds
+        for (let i = 0; i < 3; i++) {
+          const t = now + (i * 1.0);
+          
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain = ctx.createGain();
+          
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(587.33, t); // D5
+          
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(880.00, t); // A5
+
+          gain.gain.setValueAtTime(0, t);
+          gain.gain.linearRampToValueAtTime(0.15, t + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 1.5);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start(t);
+          osc2.start(t);
+          osc1.stop(t + 1.5);
+          osc2.stop(t + 1.5);
+        }
+      } catch (e) {
+        console.error('Failed to play gentle chime', e);
+      }
+    };
+
     if (phase === 'focus-work') {
       set({ phase: 'focus-break', endsAt: minutesFromNow(focusBreakMinutes) });
-      window.focusBuddy?.notifications.show('Break time', 'Focus stretch done. Take a breather.');
+      playGentleChime();
+      window.focusBuddy?.notifications.show(
+        'Break time', 
+        `Nice work. Take ${focusBreakMinutes} minutes before the next round.`, 
+        true
+      );
     } else if (phase === 'focus-break') {
       set({ phase: 'focus-work', endsAt: minutesFromNow(focusWorkMinutes) });
-      window.focusBuddy?.notifications.show('Back to it', 'Break is over. Let\u2019s focus.');
+      playGentleChime();
+      window.focusBuddy?.notifications.show(
+        'Back to it', 
+        'Break\'s over. Next round starts now.', 
+        true
+      );
     } else {
       window.focusBuddy?.session.setActive(false);
       set({ phase: 'idle', endsAt: null });
-      window.focusBuddy?.notifications.show('Wind-down complete', 'Sleep well.');
+      playGentleChime();
+      window.focusBuddy?.notifications.show('Wind-down complete', 'Sleep well.', true);
     }
   },
 

@@ -54,7 +54,10 @@ export function createTray() {
     if (win.isVisible()) {
       win.hide();
     } else {
+      if (win.isMinimized()) win.restore();
+      win.setAlwaysOnTop(true);
       win.show();
+      win.setAlwaysOnTop(false);
       win.focus();
     }
   });

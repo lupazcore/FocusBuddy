@@ -137,7 +137,7 @@ export interface FocusBuddyAPI {
     customUrl: (fileName: string) => string;
   };
   notifications: {
-    show: (title: string, body: string) => void;
+    show: (title: string, body: string, exemptFromDeepFocus?: boolean) => void;
   };
   autostart: {
     set: (enabled: boolean) => Promise<boolean>;

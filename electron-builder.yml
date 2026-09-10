@@ -14,6 +14,10 @@ extraResources:
       - "**/*"
       - "!LICENSES.md"
       - "!README.md"
+  - from: assets/icons
+    to: icons
+    filter:
+      - "tray-icon*.png"
 asar: true
 
 win:

@@ -23,13 +23,15 @@ export function getMiniPlayerWindow() {
 
 export function createMainWindow(): BrowserWindow {
   const settings = getSettings();
+  const isAutoStart = process.argv.includes('--hidden');
+  const startHidden = isAutoStart && settings.launchMinimized;
 
   const win = new BrowserWindow({
     width: 1280,
     height: 820,
     minWidth: 980,
     minHeight: 640,
-    show: false,
+    show: !startHidden,
     icon: APP_ICON,
     backgroundColor: backgroundColorFor(settings.theme),
     titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',
@@ -57,8 +59,10 @@ export function createMainWindow(): BrowserWindow {
   }
 
   win.once('ready-to-show', () => {
-    if (!settings.launchMinimized) {
-      win.show();
+    if (win.isVisible()) {
+      win.setAlwaysOnTop(true);
+      win.setAlwaysOnTop(false);
+      win.focus();
     }
   });
 

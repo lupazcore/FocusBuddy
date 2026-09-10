@@ -27,12 +27,18 @@ if (!gotLock) {
     const win = getMainWindow();
     if (win) {
       if (win.isMinimized()) win.restore();
+      win.setAlwaysOnTop(true);
       win.show();
+      win.setAlwaysOnTop(false);
       win.focus();
     }
   });
 
   app.whenReady().then(() => {
+    if (process.platform === 'win32') {
+      app.setAppUserModelId('com.lupazcore.focusbuddy');
+    }
+    
     registerSoundProtocolHandler();
     buildAppMenu();
 
@@ -59,7 +65,11 @@ if (!gotLock) {
       if (BrowserWindow.getAllWindows().length === 0) {
         createMainWindow();
       } else {
+        if (win.isMinimized()) win.restore();
+        win.setAlwaysOnTop(true);
         win.show();
+        win.setAlwaysOnTop(false);
+        win.focus();
       }
     });
   });

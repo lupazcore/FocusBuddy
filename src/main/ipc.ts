@@ -88,9 +88,9 @@ export function registerIpcHandlers() {
     store.setCustomSounds(list.filter((s) => s.id !== id));
   });
 
-  ipcMain.on(IPC.NOTIFICATION_SHOW, (_e, title: string, body: string) => {
+  ipcMain.on(IPC.NOTIFICATION_SHOW, (_e, title: string, body: string, bypassDeepFocus?: boolean) => {
     const settings = store.getSettings();
-    if (settings.deepFocusMode && focusCycleActive) return;
+    if (settings.deepFocusMode && focusCycleActive && !bypassDeepFocus) return;
     if (!Notification.isSupported()) return;
     new Notification({ title, body, silent: true }).show();
   });

@@ -13,6 +13,19 @@ const INTENSITIES: { id: LivingMixIntensity; label: string }[] = [
 
 const WIND_DOWN_PRESETS = [30, 45, 60];
 
+import { useEffect } from 'react';
+
+function useStickyNumber(key: string, defaultValue: number) {
+  const [value, setValue] = useState(() => {
+    const saved = window.localStorage.getItem(key);
+    return saved !== null ? Number(saved) : defaultValue;
+  });
+  useEffect(() => {
+    window.localStorage.setItem(key, String(value));
+  }, [key, value]);
+  return [value, setValue] as const;
+}
+
 export function Sessions() {
   const phase = useStore((s) => s.phase);
   const endsAt = useStore((s) => s.endsAt);
@@ -24,9 +37,9 @@ export function Sessions() {
   const livingMixIntensity = useStore((s) => s.livingMixIntensity);
   const setLivingMix = useStore((s) => s.setLivingMix);
 
-  const [workMinutes, setWorkMinutes] = useState(25);
-  const [breakMinutes, setBreakMinutes] = useState(5);
-  const [windDownMinutes, setWindDownMinutes] = useState(30);
+  const [workMinutes, setWorkMinutes] = useStickyNumber('fb_work_min', 25);
+  const [breakMinutes, setBreakMinutes] = useStickyNumber('fb_break_min', 5);
+  const [windDownMinutes, setWindDownMinutes] = useStickyNumber('fb_winddown_min', 30);
   const [customWindDown, setCustomWindDown] = useState('');
 
   const remaining = endsAt ? Math.max(0, Math.round((endsAt - now) / 1000)) : null;
@@ -77,7 +90,7 @@ export function Sessions() {
           <p className="kicker text-white/70">FOCUS CYCLE</p>
           <h3 className="headline text-2xl mt-1 mb-4">Work, then breathe.</h3>
           <div className="flex gap-6 mb-5">
-            <NumberPicker label="Work minutes" value={workMinutes} onChange={setWorkMinutes} min={5} max={90} step={5} />
+            <NumberPicker label="Work minutes" value={workMinutes} onChange={setWorkMinutes} min={1} max={90} step={1} />
             <NumberPicker label="Break minutes" value={breakMinutes} onChange={setBreakMinutes} min={1} max={30} step={1} />
           </div>
           <button
